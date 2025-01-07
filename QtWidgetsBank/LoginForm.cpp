@@ -21,6 +21,13 @@ LoginForm::~LoginForm() = default; //destruktor klasy, domyslny nic nie robi
 void LoginForm::loadUserData(const QString& filePath) { //funkcja wczytuje dane z pliku
 	QFile file(filePath); //obiekt QFile reprezentuje plik
 
+	if (!file.exists()) { //jesli plik nie istnieje, tworzy go
+		file.open(QIODevice::WriteOnly | QIODevice::Text);
+		file.close();
+		QMessageBox::information(this, "Nie wykryto users.txt", "Utworzono nowy plik");
+		return;	//plik jest pusty wiec nie ma potrzeby odczytu
+	}
+
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) { //otwarcie pliku read only
 		QMessageBox::critical(this, "Blad", "Nie mozna otworzyc pliku z danymi");
 			return;
@@ -71,6 +78,8 @@ void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
 		QMessageBox::warning(this, "B³¹d", "Niepoprawne cos");	
 	}
 
+	ui.usernameLineEdit->clear();
+	ui.passwordLineEdit->clear();
 }
 
 void LoginForm::onRegisterButtonClicked()
@@ -87,4 +96,6 @@ void LoginForm::onRegisterButtonClicked()
 	saveUserData("users.txt"); //zapisuje do pliku
 	QMessageBox::information(this, "Sukces", "Zarejestrowano");
 
+	ui.registerUsernameLineEdit->clear();
+	ui.registerPasswordLineEdit->clear();
 }

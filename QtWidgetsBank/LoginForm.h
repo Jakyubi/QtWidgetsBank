@@ -14,6 +14,7 @@ public:
 private slots:
 	void onLoginButtonClicked(); //slot obsluguje przycisk logowania
 	void onRegisterButtonClicked(); //obsluga rejestracji
+
 private:
 	Ui::LoginForm ui; //obiekt generowany automatycznie przez Qt z .ui
 
