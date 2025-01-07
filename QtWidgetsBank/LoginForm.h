@@ -13,9 +13,11 @@ public:
 	~LoginForm(); //destruktor klasy LoginForm
 private slots:
 	void onLoginButtonClicked(); //slot obsluguje przycisk logowania
+	void onRegisterButtonClicked(); //obsluga rejestracji
 private:
 	Ui::LoginForm ui; //obiekt generowany automatycznie przez Qt z .ui
 
 	QMap<QString, QString> userData; //mapa, przechowuje dane userow nazwa:haslo
 	void loadUserData(const QString& filePath); //funkcja wczytuje dane z pliku .txt
+	void saveUserData(const QString& filePath); //zapisuje do pliku
 };

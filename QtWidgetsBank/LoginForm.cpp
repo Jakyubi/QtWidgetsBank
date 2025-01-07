@@ -11,9 +11,12 @@ LoginForm::LoginForm(QWidget* parent)  //konstruktor klasy
 	loadUserData("users.txt"); //wczytanie danych
 
 	connect(ui.loginButton, &QPushButton::clicked, this, &LoginForm::onLoginButtonClicked); //polaczenie przycisku z logowaniem
+	connect(ui.registerButton, &QPushButton::clicked, this, &LoginForm::onRegisterButtonClicked); //polaczenie przycisku z rejestracja
 }
 
 LoginForm::~LoginForm() = default; //destruktor klasy, domyslny nic nie robi
+
+
 
 void LoginForm::loadUserData(const QString& filePath) { //funkcja wczytuje dane z pliku
 	QFile file(filePath); //obiekt QFile reprezentuje plik
@@ -37,6 +40,25 @@ void LoginForm::loadUserData(const QString& filePath) { //funkcja wczytuje dane 
 	file.close();
 }
 
+void LoginForm::saveUserData(const QString& filePath)
+{
+	QFile file(filePath);
+
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		QMessageBox::critical(this, "Blad", "Nie mozna zapisac");
+		return;
+	}
+
+	QTextStream out(&file); //tworzy strumien tekstowy
+
+	for (auto it = userData.begin(); it != userData.end(); ++it) { //zapisuje kazda pare user:haslo
+		out << it.key() << ":" << it.value() << "\n";
+	}
+
+	file.close();
+
+}
+
 void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
 	QString username = ui.usernameLineEdit->text(); //pobiera tekst z pola
 	QString password = ui.passwordLineEdit->text();
@@ -48,5 +70,21 @@ void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
 	else {
 		QMessageBox::warning(this, "B³¹d", "Niepoprawne cos");	
 	}
+
+}
+
+void LoginForm::onRegisterButtonClicked()
+{
+	QString newUsername = ui.registerUsernameLineEdit->text(); //pobiera nazwe usera
+	QString newPassword = ui.registerPasswordLineEdit->text(); //pobiera haslo
+
+	if (newUsername.isEmpty() || newPassword.isEmpty()) {
+		QMessageBox::warning(this, "Blad", "Nie moze byc puste");
+		return;
+	}
+
+	userData[newUsername] = newPassword; //dodaje nowego usera
+	saveUserData("users.txt"); //zapisuje do pliku
+	QMessageBox::information(this, "Sukces", "Zarejestrowano");
 
 }
