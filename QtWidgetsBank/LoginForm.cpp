@@ -38,10 +38,11 @@ void LoginForm::loadUserData(const QString& filePath) { //funkcja wczytuje dane 
 	while (!in.atEnd()) {
 		QString line = in.readLine(); //odczytuje jedna linie
 		QStringList parts = line.split(':'); //dzieli na dwie czesci
-		if (parts.size() == 2) { //sprawdza czy dobry format
+		if (parts.size() == 3) { //sprawdza czy dobry format
 			QString username = parts[0].trimmed(); //usuwa spacje
 			QString password = parts[1].trimmed();
-			userData[username] = password; //dodaje do mapy
+			double balance = parts[2].toDouble();
+			userData[username] = {password, balance}; //dodaje do mapy
 		}
 	}
 	file.close();
@@ -59,7 +60,7 @@ void LoginForm::saveUserData(const QString& filePath)
 	QTextStream out(&file); //tworzy strumien tekstowy
 
 	for (auto it = userData.begin(); it != userData.end(); ++it) { //zapisuje kazda pare user:haslo
-		out << it.key() << ":" << it.value() << "\n";
+		out << it.key() << ":" << it.value().password << ":" << it.value().balance << "\n";
 	}
 
 	file.close();
@@ -70,7 +71,7 @@ void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
 	QString username = ui.usernameLineEdit->text(); //pobiera tekst z pola
 	QString password = ui.passwordLineEdit->text();
 
-	if (userData.contains(username) && userData[username] == password) { //sprawdza poprawnosc danych
+	if (userData.contains(username) && userData[username].password == password) { //sprawdza poprawnosc danych
 		QMessageBox::information(this, "Sukces", "Zalogowano pomyslne!");
 		accept();
 	}
@@ -92,7 +93,11 @@ void LoginForm::onRegisterButtonClicked()
 		return;
 	}
 
-	userData[newUsername] = newPassword; //dodaje nowego usera
+	if (userData.contains(newUsername)) {
+		QMessageBox::warning(this, "Blad", "User istnieje");
+	}
+
+	userData[newUsername] = { newPassword, 0.0 }; //dodaje nowego usera
 	saveUserData("users.txt"); //zapisuje do pliku
 	QMessageBox::information(this, "Sukces", "Zarejestrowano");
 
