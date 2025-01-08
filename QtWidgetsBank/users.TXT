@@ -1,2 +1,1 @@
-admin:admin
-user1:qwerty
+admin:admin:100

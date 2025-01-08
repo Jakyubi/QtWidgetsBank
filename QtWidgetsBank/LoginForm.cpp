@@ -72,6 +72,8 @@ void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
 	QString password = ui.passwordLineEdit->text();
 
 	if (userData.contains(username) && userData[username].password == password) { //sprawdza poprawnosc danych
+		loggedInUsername = username;
+		loggedInBalance = userData[username].balance;
 		QMessageBox::information(this, "Sukces", "Zalogowano pomyslne!");
 		accept();
 	}

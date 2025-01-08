@@ -5,7 +5,6 @@
 #include <QString>
 #include "ui_LoginForm.h"
 
-
 struct UserAccount { //struktura reprezentuj¹ca has³o i saldo
 	QString password;
 	double balance;
@@ -17,6 +16,10 @@ class LoginForm : public QDialog {
 public:
 	explicit LoginForm(QWidget* parent = nullptr); //konstruktor klasy LoginForm
 	~LoginForm(); //destruktor klasy LoginForm
+
+	QString getCurrentUsername() const {return loggedInUsername;}
+	double getCurrentBalance() const { return loggedInBalance; }
+
 private slots:
 	void onLoginButtonClicked(); //slot obsluguje przycisk logowania
 	void onRegisterButtonClicked(); //obsluga rejestracji
@@ -27,4 +30,7 @@ private:
 	QMap<QString, UserAccount> userData; //mapa, przechowuje dane userow nazwa:haslo:saldo
 	void loadUserData(const QString& filePath); //funkcja wczytuje dane z pliku .txt
 	void saveUserData(const QString& filePath); //zapisuje do pliku
+
+	QString loggedInUsername;
+	double loggedInBalance;
 };

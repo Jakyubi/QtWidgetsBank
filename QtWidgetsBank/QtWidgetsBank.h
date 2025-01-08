@@ -8,9 +8,13 @@ class QtWidgetsBank : public QMainWindow
     Q_OBJECT
 
 public:
-    QtWidgetsBank(QWidget *parent = nullptr);
+    explicit QtWidgetsBank(const QString& username, double balance, QWidget *parent = nullptr);
     ~QtWidgetsBank();
 
 private:
     Ui::QtWidgetsBankClass ui;
+    QString currentUsername;
+    double currentBalance;
+
+    void updateUserInfo();
 };

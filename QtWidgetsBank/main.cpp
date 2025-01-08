@@ -11,8 +11,9 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-
-    QtWidgetsBank w;
+    QString username = loginForm.getCurrentUsername();
+    double balance = loginForm.getCurrentBalance();
+    QtWidgetsBank w(username, balance);
     w.show();
     return a.exec();
 }
