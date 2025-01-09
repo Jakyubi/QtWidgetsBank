@@ -13,6 +13,7 @@ public:
 
 private slots:
     void onDepositButtonClicked();
+    void onWithdrawButtonClicked();
 
 private:
     Ui::QtWidgetsBankClass ui;

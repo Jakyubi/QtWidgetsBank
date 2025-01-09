@@ -10,6 +10,7 @@ QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double ba
     updateBalanceDisplay();
 
     connect(ui.depositButton, &QPushButton::clicked, this, &QtWidgetsBank::onDepositButtonClicked);
+    connect(ui.withdrawButton, &QPushButton::clicked, this, &QtWidgetsBank::onWithdrawButtonClicked);
 
 }
 
@@ -41,6 +42,27 @@ void QtWidgetsBank::onDepositButtonClicked() {
     QMessageBox::information(this, "Sukces", QString("Wplacono %1 PLN").arg(depositAmount, 0, 'f', 2));
 
 
+    LoginForm loginForm;
+    loginForm.updateUserBalance(currentUsername, currentBalance);
+}
+
+void QtWidgetsBank::onWithdrawButtonClicked()
+{
+    bool ok;
+    double withdrawAmount = ui.withdrawlineEdit->text().toDouble(&ok);
+
+    if (!ok || withdrawAmount <= 0 || withdrawAmount > currentBalance) {
+        QMessageBox::warning(this, "Blad", "Niepoprawna kwota");
+        return;
+    }
+
+    currentBalance -= withdrawAmount;
+
+    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+
+    ui.withdrawlineEdit->clear();
+    QMessageBox::information(this, "Sukces", QString("Wyplacono %1 PLN").arg(withdrawAmount, 0, 'f', 2));
+    
     LoginForm loginForm;
     loginForm.updateUserBalance(currentUsername, currentBalance);
 }
