@@ -20,6 +20,8 @@ public:
 	QString getCurrentUsername() const {return loggedInUsername;}
 	double getCurrentBalance() const { return loggedInBalance; }
 
+	void updateUserBalance(const QString& username, double newBalance);
+
 private slots:
 	void onLoginButtonClicked(); //slot obsluguje przycisk logowania
 	void onRegisterButtonClicked(); //obsluga rejestracji

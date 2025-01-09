@@ -8,8 +8,11 @@ class QtWidgetsBank : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit QtWidgetsBank(const QString& username, double balance, QWidget *parent = nullptr);
+    QtWidgetsBank(QWidget* parent = nullptr, const QString& username="" , double balance=0.0);
     ~QtWidgetsBank();
+
+private slots:
+    void onDepositButtonClicked();
 
 private:
     Ui::QtWidgetsBankClass ui;
@@ -17,4 +20,5 @@ private:
     double currentBalance;
 
     void updateUserInfo();
+    void updateBalanceDisplay();
 };

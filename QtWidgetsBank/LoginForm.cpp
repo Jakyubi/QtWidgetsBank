@@ -85,6 +85,7 @@ void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
 	ui.passwordLineEdit->clear();
 }
 
+
 void LoginForm::onRegisterButtonClicked()
 {
 	QString newUsername = ui.registerUsernameLineEdit->text(); //pobiera nazwe usera
@@ -105,4 +106,12 @@ void LoginForm::onRegisterButtonClicked()
 
 	ui.registerUsernameLineEdit->clear();
 	ui.registerPasswordLineEdit->clear();
+}
+
+void LoginForm::updateUserBalance(const QString& username, double newBalance)
+{
+	if (userData.contains(username)) {
+		userData[username].balance = newBalance;
+		saveUserData("users.txt");
+	}
 }

@@ -14,19 +14,6 @@
    <string>QtWidgetsBank</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>110</y>
-      <width>151</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Witamy w apce banku</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="usernameLabel">
     <property name="geometry">
      <rect>
@@ -37,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>Logged in User</string>
     </property>
    </widget>
    <widget class="QLabel" name="balanceLabel">
@@ -50,7 +37,56 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>Balance</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="depositlineEdit">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>20</y>
+      <width>113</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="withdrawlineEdit">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>50</y>
+      <width>113</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="depositButton">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>20</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Deposit</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="withdrawButton">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>50</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Withdraw</string>
     </property>
    </widget>
   </widget>
