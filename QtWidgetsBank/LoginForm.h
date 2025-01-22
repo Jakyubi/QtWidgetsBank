@@ -22,7 +22,7 @@ public:
 
 	void updateUserBalance(const QString& username, double newBalance);
 
-	QMap<QString, UserAccount> getUserData() const { return userData; }
+	QMap<QString, UserAccount> getUserData() const { return userData; } //funkcja do dostêpu do danych uzytkownikow
 
 private slots:
 	void onLoginButtonClicked(); //slot obsluguje przycisk logowania

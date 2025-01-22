@@ -2,13 +2,15 @@
 #include <QMessageBox>
 #include "LoginForm.h"
 
+//konstruktor klasy
 QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double balance, const QMap<QString, UserAccount>& data)
     : QMainWindow(parent), currentUsername(username), currentBalance(balance), userData(data)
 {
-    ui.setupUi(this);
-    updateUserInfo();
-    updateBalanceDisplay();
+    ui.setupUi(this);       //inicjalizacja interfejsu
+    updateUserInfo();       //wyœwietla aktualnego usera
+    updateBalanceDisplay(); //wyœwietla aktualne saldo
 
+    //³¹czenie sygna³ów ze slotami
     connect(ui.depositButton, &QPushButton::clicked, this, &QtWidgetsBank::onDepositButtonClicked);
     connect(ui.withdrawButton, &QPushButton::clicked, this, &QtWidgetsBank::onWithdrawButtonClicked);
     connect(ui.transferButton, &QPushButton::clicked, this, &QtWidgetsBank::onTransferButtonClicked);
@@ -16,14 +18,17 @@ QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double ba
 
 QtWidgetsBank::~QtWidgetsBank() = default;
 
+//aktualizacja nazwy na ekranie
 void QtWidgetsBank::updateUserInfo() {
     ui.usernameLabel->setText(QString("Witaj, %1!").arg(currentUsername));
 }
 
+//aktualizacja salda
 void QtWidgetsBank::updateBalanceDisplay() {
     ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
 }
 
+//obs³uga przycisku wp³aty
 void QtWidgetsBank::onDepositButtonClicked() {
     
     bool ok;
@@ -46,6 +51,7 @@ void QtWidgetsBank::onDepositButtonClicked() {
     loginForm.updateUserBalance(currentUsername, currentBalance);
 }
 
+//obs³uga przycisku wyp³aty
 void QtWidgetsBank::onWithdrawButtonClicked()
 {
     bool ok;
@@ -67,6 +73,7 @@ void QtWidgetsBank::onWithdrawButtonClicked()
     loginForm.updateUserBalance(currentUsername, currentBalance);
 }
 
+//obs³uga przycisku przelewu
 void QtWidgetsBank::onTransferButtonClicked()
 {
 
@@ -99,6 +106,6 @@ void QtWidgetsBank::onTransferButtonClicked()
 
     ui.transferUsernameLineEdit->clear();
     ui.transferCashLineEdit->clear();
-    QMessageBox::information(this, "Success", QString("Przelew na 1%PLN wykonany").arg(transferAmount));
+    QMessageBox::information(this, "Success", QString("Przelew na %1 PLN wykonany").arg(transferAmount));
 
 }
