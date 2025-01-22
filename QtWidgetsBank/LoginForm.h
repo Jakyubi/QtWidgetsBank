@@ -22,6 +22,8 @@ public:
 
 	void updateUserBalance(const QString& username, double newBalance);
 
+	QMap<QString, UserAccount> getUserData() const { return userData; }
+
 private slots:
 	void onLoginButtonClicked(); //slot obsluguje przycisk logowania
 	void onRegisterButtonClicked(); //obsluga rejestracji

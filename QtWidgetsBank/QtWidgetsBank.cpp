@@ -2,8 +2,8 @@
 #include <QMessageBox>
 #include "LoginForm.h"
 
-QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double balance)
-    : QMainWindow(parent), currentUsername(username), currentBalance(balance)
+QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double balance, const QMap<QString, UserAccount>& data)
+    : QMainWindow(parent), currentUsername(username), currentBalance(balance), userData(data)
 {
     ui.setupUi(this);
     updateUserInfo();
@@ -11,7 +11,7 @@ QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double ba
 
     connect(ui.depositButton, &QPushButton::clicked, this, &QtWidgetsBank::onDepositButtonClicked);
     connect(ui.withdrawButton, &QPushButton::clicked, this, &QtWidgetsBank::onWithdrawButtonClicked);
-
+    connect(ui.transferButton, &QPushButton::clicked, this, &QtWidgetsBank::onTransferButtonClicked);
 }
 
 QtWidgetsBank::~QtWidgetsBank() = default;
@@ -65,4 +65,40 @@ void QtWidgetsBank::onWithdrawButtonClicked()
     
     LoginForm loginForm;
     loginForm.updateUserBalance(currentUsername, currentBalance);
+}
+
+void QtWidgetsBank::onTransferButtonClicked()
+{
+
+    QString transferUsername = ui.transferUsernameLineEdit->text();
+    bool ok;
+    double transferAmount = ui.transferCashLineEdit->text().toDouble(&ok);
+
+    if(!ok || transferAmount <= 0.0){
+        QMessageBox::warning(this, "Blad", "Wprowadz poprawna kwote");
+        return;
+    }
+
+    if (currentBalance < transferAmount) {
+        QMessageBox::warning(this, "Blad", "Wprowadz poprawna kwote");
+        return;
+    }
+
+    if (!userData.contains(transferUsername)) {
+        QMessageBox::warning(this, "Blad", "User nie istnieje");
+        return;
+    }
+
+    currentBalance -= transferAmount;
+    userData[transferUsername].balance += transferAmount;
+    updateBalanceDisplay();
+
+    LoginForm loginForm;
+    loginForm.updateUserBalance(currentUsername, currentBalance);
+    loginForm.updateUserBalance(transferUsername, userData[transferUsername].balance);
+
+    ui.transferUsernameLineEdit->clear();
+    ui.transferCashLineEdit->clear();
+    QMessageBox::information(this, "Success", QString("Przelew na 1%PLN wykonany").arg(transferAmount));
+
 }
