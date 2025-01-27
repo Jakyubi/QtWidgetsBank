@@ -1,6 +1,7 @@
 #include "QtWidgetsBank.h"
 #include <QMessageBox>
 #include <QFile>
+#include <QDate>
 #include "LoginForm.h"
 
 //konstruktor klasy
@@ -37,12 +38,14 @@ void QtWidgetsBank::logTransactions(const QString& fromUser, const QString& type
     QString fileName = "transaction_history.txt";
     QFile file(fileName);
 
+    QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+
     if (file.open(QIODevice::Append | QIODevice::Text)) {
         QTextStream out(&file);
-        out << fromUser << " - " << type << " - " << amount << " - " << toUser << "\n";
+        out << fromUser << " - " << type << " - " << amount << " PLN" << " - " << toUser << " - " << currentDateTime << "\n";
 
         if (type == "Transfer" && fromUser != toUser) {
-            out << toUser << " - Received - " << amount << " - " << fromUser << "\n";
+            out << toUser << " - Received - " << amount << " PLN" << " - " << fromUser << " - " << currentDateTime << "\n";
         }
         file.close();
     }
@@ -72,6 +75,8 @@ void QtWidgetsBank::loadTransactionHistory()
     file.close();
 
 }
+
+
 
 //obs³uga przycisku wp³aty
 void QtWidgetsBank::onDepositButtonClicked() {
@@ -126,7 +131,7 @@ void QtWidgetsBank::onWithdrawButtonClicked()
 
 }
 
-//obs³uga przycisku przelewu
+//obs³uga przycisku przelewu 
 void QtWidgetsBank::onTransferButtonClicked()
 {
 
@@ -173,12 +178,11 @@ void QtWidgetsBank::onLogoutButtonClicked()
 
     LoginForm loginForm;
 
-
-    //if (loginForm.exec() == QDialog::Accepted) {
-    //    QString username = loginForm.getCurrentUsername();
-    //    double balance = loginForm.getCurrentBalance();
-    //    QtWidgetsBank* newBankWindow = new QtWidgetsBank(nullptr, username, balance);
-    //    newBankWindow->show();
-    //}
+    if (loginForm.exec() == QDialog::Accepted) {
+        QString username = loginForm.getCurrentUsername();
+        double balance = loginForm.getCurrentBalance();
+        QtWidgetsBank* newBankWindow = new QtWidgetsBank(nullptr, username, balance);
+        newBankWindow->show();
+    }
 
 }
