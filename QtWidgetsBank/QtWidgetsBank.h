@@ -18,6 +18,7 @@ private slots:
     void onDepositButtonClicked();
     void onWithdrawButtonClicked();
     void onTransferButtonClicked();
+    void onLogoutButtonClicked();
 
 
 private:

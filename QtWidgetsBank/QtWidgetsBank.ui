@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>839</width>
     <height>400</height>
    </rect>
   </property>
@@ -169,9 +169,22 @@
      <rect>
       <x>423</x>
       <y>10</y>
-      <width>171</width>
+      <width>291</width>
       <height>321</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="logoutButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>300</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Log out</string>
     </property>
    </widget>
   </widget>
@@ -180,7 +193,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>839</width>
      <height>21</height>
     </rect>
    </property>

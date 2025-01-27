@@ -16,6 +16,8 @@ QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double ba
     connect(ui.depositButton, &QPushButton::clicked, this, &QtWidgetsBank::onDepositButtonClicked);
     connect(ui.withdrawButton, &QPushButton::clicked, this, &QtWidgetsBank::onWithdrawButtonClicked);
     connect(ui.transferButton, &QPushButton::clicked, this, &QtWidgetsBank::onTransferButtonClicked);
+    connect(ui.logoutButton, &QPushButton::clicked, this, &QtWidgetsBank::onLogoutButtonClicked);
+
 }
 
 QtWidgetsBank::~QtWidgetsBank() = default;
@@ -162,5 +164,21 @@ void QtWidgetsBank::onTransferButtonClicked()
     QMessageBox::information(this, "Success", QString("Przelew na %1 PLN wykonany").arg(transferAmount));
 
     loadTransactionHistory();
+
+}
+
+void QtWidgetsBank::onLogoutButtonClicked()
+{
+    this->close();
+
+    LoginForm loginForm;
+
+
+    //if (loginForm.exec() == QDialog::Accepted) {
+    //    QString username = loginForm.getCurrentUsername();
+    //    double balance = loginForm.getCurrentBalance();
+    //    QtWidgetsBank* newBankWindow = new QtWidgetsBank(nullptr, username, balance);
+    //    newBankWindow->show();
+    //}
 
 }
