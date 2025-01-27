@@ -27,8 +27,10 @@ private:
 
     QMap<QString, UserAccount> userData;   //dane wszystkich u¿ytkowników
 
-    //funkcje do aktualizacji interfejsu
+    //funkcje do aktualizacji inter
     void updateUserInfo();
     void updateBalanceDisplay();
+    void logTransactions(const QString& fromUser, const QString& type, double amount, const QString& toUser);
+    void loadTransactionHistory();
 
 };

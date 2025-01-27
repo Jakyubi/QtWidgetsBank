@@ -164,6 +164,16 @@
      <string>Transfer</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="historyTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>423</x>
+      <y>10</y>
+      <width>171</width>
+      <height>321</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
