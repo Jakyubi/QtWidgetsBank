@@ -67,7 +67,7 @@ void LoginForm::saveUserData(const QString& filePath)
 
 }
 
-void LoginForm::onLoginButtonClicked() { //slot obsluguje klikniecie przycisku
+void LoginForm::onLoginButtonClicked()  { //slot obsluguje klikniecie przycisku
 	QString username = ui.usernameLineEdit->text(); //pobiera tekst z pola
 	QString password = ui.passwordLineEdit->text();
 

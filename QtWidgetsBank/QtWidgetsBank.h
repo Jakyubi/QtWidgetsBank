@@ -20,6 +20,9 @@ private slots:
     void onTransferButtonClicked();
     void onLogoutButtonClicked();
 
+    void onATMDepositButtonClicked();
+    void onATMWithdrawButtonClicked();
+
 
 private:
     Ui::QtWidgetsBankClass ui;  //generowanie interfejsu

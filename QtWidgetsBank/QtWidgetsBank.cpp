@@ -16,6 +16,8 @@ QtWidgetsBank::QtWidgetsBank(QWidget* parent, const QString& username, double ba
     //³¹czenie sygna³ów ze slotami
     connect(ui.depositButton, &QPushButton::clicked, this, &QtWidgetsBank::onDepositButtonClicked);
     connect(ui.withdrawButton, &QPushButton::clicked, this, &QtWidgetsBank::onWithdrawButtonClicked);
+    connect(ui.depositButtonATM, &QPushButton::clicked, this, &QtWidgetsBank::onATMDepositButtonClicked);
+    connect(ui.withdrawButtonATM, &QPushButton::clicked, this, &QtWidgetsBank::onATMWithdrawButtonClicked);
     connect(ui.transferButton, &QPushButton::clicked, this, &QtWidgetsBank::onTransferButtonClicked);
     connect(ui.logoutButton, &QPushButton::clicked, this, &QtWidgetsBank::onLogoutButtonClicked);
 
@@ -185,4 +187,55 @@ void QtWidgetsBank::onLogoutButtonClicked()
         newBankWindow->show();
     }
 
+}
+
+void QtWidgetsBank::onATMDepositButtonClicked()
+{
+
+    bool ok;
+    double depositAmount = ui.depositlineEditATM->text().toDouble(&ok);
+
+    if (!ok || depositAmount <= 0) {
+        QMessageBox::warning(this, "Blad", "Nieprawidlowa kwota");
+        return;
+    }
+
+    currentBalance += depositAmount;
+
+    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+
+    logTransactions(currentUsername, "Deposit", depositAmount, "ATM");
+    ui.depositlineEditATM->clear();
+    QMessageBox::information(this, "Sukces", QString("Wplacono %1 PLN").arg(depositAmount, 0, 'f', 2));
+
+
+    LoginForm loginForm;
+    loginForm.updateUserBalance(currentUsername, currentBalance);
+    loadTransactionHistory();
+}
+
+void QtWidgetsBank::onATMWithdrawButtonClicked()
+{
+
+    bool ok;
+    double withdrawAmount = ui.withdrawlineEditATM->text().toDouble(&ok);
+
+    if (!ok || withdrawAmount <= 0 || withdrawAmount > currentBalance) {
+        QMessageBox::warning(this, "Blad", "Niepoprawna kwota");
+        return;
+    }
+
+    currentBalance -= withdrawAmount;
+
+    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+
+    logTransactions(currentUsername, "Withdraw", withdrawAmount, "ATM");
+
+
+    ui.withdrawlineEditATM->clear();
+    QMessageBox::information(this, "Sukces", QString("Wyplacono %1 PLN").arg(withdrawAmount, 0, 'f', 2));
+
+    LoginForm loginForm;
+    loginForm.updateUserBalance(currentUsername, currentBalance);
+    loadTransactionHistory();
 }
