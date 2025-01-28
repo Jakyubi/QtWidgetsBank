@@ -24,12 +24,12 @@ void LoginForm::loadUserData(const QString& filePath) { //funkcja wczytuje dane 
 	if (!file.exists()) { //jesli plik nie istnieje, tworzy go
 		file.open(QIODevice::WriteOnly | QIODevice::Text);
 		file.close();
-		QMessageBox::information(this, "Nie wykryto users.txt", "Utworzono nowy plik");
+		QMessageBox::information(this, "Couldn't find users.txt", "Created new file");
 		return;	//plik jest pusty wiec nie ma potrzeby odczytu
 	}
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) { //otwarcie pliku read only
-		QMessageBox::critical(this, "Blad", "Nie mozna otworzyc pliku z danymi");
+		QMessageBox::critical(this, "Error", "Cannon open data file");
 			return;
 	}
 
@@ -53,7 +53,7 @@ void LoginForm::saveUserData(const QString& filePath)
 	QFile file(filePath);
 
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QMessageBox::critical(this, "Blad", "Nie mozna zapisac");
+		QMessageBox::critical(this, "Error", "Can not save");
 		return;
 	}
 
@@ -74,11 +74,11 @@ void LoginForm::onLoginButtonClicked()  { //slot obsluguje klikniecie przycisku
 	if (userData.contains(username) && userData[username].password == password) { //sprawdza poprawnosc danych
 		loggedInUsername = username;
 		loggedInBalance = userData[username].balance;
-		QMessageBox::information(this, "Sukces", "Zalogowano pomyslne!");
+		QMessageBox::information(this, "Success", "Successfully logged in");
 		accept();
 	}
 	else {
-		QMessageBox::warning(this, "B³¹d", "Niepoprawne cos");	
+		QMessageBox::warning(this, "Error", "Wrong login or password");	
 	}
 
 	ui.usernameLineEdit->clear();
@@ -92,17 +92,20 @@ void LoginForm::onRegisterButtonClicked()
 	QString newPassword = ui.registerPasswordLineEdit->text(); //pobiera haslo
 
 	if (newUsername.isEmpty() || newPassword.isEmpty()) {
-		QMessageBox::warning(this, "Blad", "Nie moze byc puste");
+		QMessageBox::warning(this, "Error", "Cannot be empty");
 		return;
 	}
 
 	if (userData.contains(newUsername)) {
-		QMessageBox::warning(this, "Blad", "User istnieje");
+		QMessageBox::warning(this, "Error", "User already exists");
+		return;
+		ui.registerUsernameLineEdit->clear();
+		ui.registerPasswordLineEdit->clear();
 	}
 
 	userData[newUsername] = { newPassword, 0.0 }; //dodaje nowego usera
 	saveUserData("users.txt"); //zapisuje do pliku
-	QMessageBox::information(this, "Sukces", "Zarejestrowano");
+	QMessageBox::information(this, "Success", "Successfully registered");
 
 	ui.registerUsernameLineEdit->clear();
 	ui.registerPasswordLineEdit->clear();

@@ -27,12 +27,12 @@ QtWidgetsBank::~QtWidgetsBank() = default;
 
 //aktualizacja nazwy na ekranie
 void QtWidgetsBank::updateUserInfo() {
-    ui.usernameLabel->setText(QString("Witaj, %1!").arg(currentUsername));
+    ui.usernameLabel->setText(QString("Hello, %1!").arg(currentUsername));
 }
 
 //aktualizacja salda
 void QtWidgetsBank::updateBalanceDisplay() {
-    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+    ui.balanceLabel->setText(QString("Balance: %1 PLN").arg(currentBalance, 0, 'f', 2));
 }
 
 void QtWidgetsBank::logTransactions(const QString& fromUser, const QString& type, double amount, const QString& toUser)
@@ -59,7 +59,7 @@ void QtWidgetsBank::loadTransactionHistory()
     QFile file(fileName);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        ui.historyTextEdit->setText("Brak historii");
+        ui.historyTextEdit->setText("History empty");
         return;
     }
 
@@ -68,7 +68,12 @@ void QtWidgetsBank::loadTransactionHistory()
 
     while (!in.atEnd()) {
         QString line = in.readLine();
-        if (line.startsWith(currentUsername)) {
+        
+        /*if (line.startsWith(currentUsername)) {
+            historyContent += line + "\n";
+        }*/
+        QStringList parts = line.split(" - ");
+        if (parts.size() > 0 && parts[0] == currentUsername) {
             historyContent += line + "\n";
         }
     }
@@ -87,17 +92,17 @@ void QtWidgetsBank::onDepositButtonClicked() {
     double depositAmount = ui.depositlineEdit->text().toDouble(&ok);
 
     if (!ok || depositAmount <= 0) {
-        QMessageBox::warning(this, "Blad", "Nieprawidlowa kwota");
+        QMessageBox::warning(this, "Error", "Incorrect amount");
             return;
     }
 
     currentBalance += depositAmount;
 
-    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+    ui.balanceLabel->setText(QString("Balance: %1 PLN").arg(currentBalance, 0, 'f', 2));
     
     logTransactions(currentUsername, "Deposit", depositAmount, "self");
     ui.depositlineEdit->clear();
-    QMessageBox::information(this, "Sukces", QString("Wplacono %1 PLN").arg(depositAmount, 0, 'f', 2));
+    QMessageBox::information(this, "Success", QString("%1 PLN deposited").arg(depositAmount, 0, 'f', 2));
 
 
     LoginForm loginForm;
@@ -113,19 +118,19 @@ void QtWidgetsBank::onWithdrawButtonClicked()
     double withdrawAmount = ui.withdrawlineEdit->text().toDouble(&ok);
 
     if (!ok || withdrawAmount <= 0 || withdrawAmount > currentBalance) {
-        QMessageBox::warning(this, "Blad", "Niepoprawna kwota");
+        QMessageBox::warning(this, "Error", "Incorrect amount");
         return;
     }
 
     currentBalance -= withdrawAmount;
 
-    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+    ui.balanceLabel->setText(QString("Balance: %1 PLN").arg(currentBalance, 0, 'f', 2));
 
     logTransactions(currentUsername, "Withdraw", withdrawAmount, "self");
 
 
     ui.withdrawlineEdit->clear();
-    QMessageBox::information(this, "Sukces", QString("Wyplacono %1 PLN").arg(withdrawAmount, 0, 'f', 2));
+    QMessageBox::information(this, "Success", QString("%1 PLN deposited").arg(withdrawAmount, 0, 'f', 2));
     
     LoginForm loginForm;
     loginForm.updateUserBalance(currentUsername, currentBalance);
@@ -142,17 +147,17 @@ void QtWidgetsBank::onTransferButtonClicked()
     double transferAmount = ui.transferCashLineEdit->text().toDouble(&ok);
 
     if(!ok || transferAmount <= 0.0){
-        QMessageBox::warning(this, "Blad", "Wprowadz poprawna kwote");
+        QMessageBox::warning(this, "Error", "Enter correct amount");
         return;
     }
 
     if (currentBalance < transferAmount) {
-        QMessageBox::warning(this, "Blad", "Wprowadz poprawna kwote");
+        QMessageBox::warning(this, "Error", "Enter correct amount");
         return;
     }
 
     if (!userData.contains(transferUsername)) {
-        QMessageBox::warning(this, "Blad", "User nie istnieje");
+        QMessageBox::warning(this, "Error", "Given user doesn't exist");
         return;
     }
 
@@ -168,7 +173,7 @@ void QtWidgetsBank::onTransferButtonClicked()
 
     ui.transferUsernameLineEdit->clear();
     ui.transferCashLineEdit->clear();
-    QMessageBox::information(this, "Success", QString("Przelew na %1 PLN wykonany").arg(transferAmount));
+    QMessageBox::information(this, "Success", QString("Transfered %1 PLN").arg(transferAmount));
 
     loadTransactionHistory();
 
@@ -196,17 +201,17 @@ void QtWidgetsBank::onATMDepositButtonClicked()
     double depositAmount = ui.depositlineEditATM->text().toDouble(&ok);
 
     if (!ok || depositAmount <= 0) {
-        QMessageBox::warning(this, "Blad", "Nieprawidlowa kwota");
+        QMessageBox::warning(this, "Error", "Incorrect amount");
         return;
     }
 
     currentBalance += depositAmount;
 
-    ui.balanceLabel->setText(QString("Saldo: %1 PLN").arg(currentBalance, 0, 'f', 2));
+    ui.balanceLabel->setText(QString("Balance: %1 PLN").arg(currentBalance, 0, 'f', 2));
 
     logTransactions(currentUsername, "Deposit", depositAmount, "ATM");
     ui.depositlineEditATM->clear();
-    QMessageBox::information(this, "Sukces", QString("Wplacono %1 PLN").arg(depositAmount, 0, 'f', 2));
+    QMessageBox::information(this, "Success", QString("%1 PLN deposited").arg(depositAmount, 0, 'f', 2));
 
 
     LoginForm loginForm;
@@ -221,7 +226,7 @@ void QtWidgetsBank::onATMWithdrawButtonClicked()
     double withdrawAmount = ui.withdrawlineEditATM->text().toDouble(&ok);
 
     if (!ok || withdrawAmount <= 0 || withdrawAmount > currentBalance) {
-        QMessageBox::warning(this, "Blad", "Niepoprawna kwota");
+        QMessageBox::warning(this, "Error", "Incorrect amount");
         return;
     }
 
@@ -233,7 +238,7 @@ void QtWidgetsBank::onATMWithdrawButtonClicked()
 
 
     ui.withdrawlineEditATM->clear();
-    QMessageBox::information(this, "Sukces", QString("Wyplacono %1 PLN").arg(withdrawAmount, 0, 'f', 2));
+    QMessageBox::information(this, "Success", QString("%1 PLN withdrawn").arg(withdrawAmount, 0, 'f', 2));
 
     LoginForm loginForm;
     loginForm.updateUserBalance(currentUsername, currentBalance);
